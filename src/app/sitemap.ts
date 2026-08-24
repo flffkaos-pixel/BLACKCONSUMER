@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
+// ponytail: 배포 후 실제 도메인으로 교체 (또는 환경변수 NEXT_PUBLIC_SITE_URL 사용)
+const SITE_URL = "https://your-domain.vercel.app";
+
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL;
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "hourly", priority: 1 },
     { url: `${base}/terms`, changeFrequency: "monthly", priority: 0.3 },
