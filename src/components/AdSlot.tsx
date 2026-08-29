@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID ?? "";
+const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID ?? "ca-pub-1955893232253258";
 
 export default function AdSlot({ slot }: { slot: string }) {
   useEffect(() => {

@@ -17,8 +17,7 @@ export const metadata: Metadata = {
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-// ponytail: 구글 애드센스 퍼블리셔 ID. 승인 후 ca-pub-XXXX 로 교체하면 광고 자동 노출
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID ?? "";
+const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID ?? "ca-pub-1955893232253258";
 
 const orgJsonLd = {
   "@context": "https://schema.org",
@@ -49,6 +48,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <meta name="naver-site-verification" content="985014f4ac67680cdea4dbd3395ad557fc22dca1" />
+        <meta name="google-site-verification" content="5m9WrjHo6HZ1aRzDjKvDEtLsv1Egv2K2yi-clQ1WHfk" />
         {ADSENSE_ID && (
           <script
             async
