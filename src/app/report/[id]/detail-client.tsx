@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ShieldAlert, ArrowLeft, User, Share2, MapPin, Calendar, Phone, Car, Eye, Wallet, MessageSquareWarning, Flag } from 'lucide-react';
 import type { Report } from '@/lib/types';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import AdSlot from '@/components/AdSlot';
 
 const fmtAmount = (n: number | null) => n == null ? null : new Intl.NumberFormat('ko-KR').format(n) + '원';
 
@@ -148,6 +149,8 @@ export default function ReportDetail({ id }: { id: string }) {
                 </button>
               )}
             </section>
+
+            <AdSlot slot="2233445566" />
 
             <footer className="border-t border-zinc-800 pt-6 text-[11px] text-zinc-600 leading-relaxed">
               본 정보는 사용자 제보에 기반하며, 허위 사실 유포 시 명예훼손으로 처벌될 수 있습니다. 상대방 일방 주장이 포함될 수 있으므로 거래 판단 시 참고 자료로만 활용하세요. <a href="/terms" className="text-amber-500/80 underline">전체 이용약관 보기</a>

@@ -4,6 +4,7 @@ import { Search, UserPlus, ShieldAlert, Filter, User, Info, X, ExternalLink, Dat
 import { cn } from '@/lib/utils';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import type { Report } from '@/lib/types';
+import AdSlot from '@/components/AdSlot';
 
 // ponytail: DB 미연결 시 보여주는 데모 데이터. .env.local 채우면 사라짐
 const MOCK_DATA: Report[] = [
@@ -207,6 +208,8 @@ export default function BlackArchive() {
             <p className="text-zinc-500">일치하는 기록이 없습니다.</p>
           </div>
         )}
+
+        <AdSlot slot="1122334455" />
       </main>
 
       {/* Reporting Modal */}
