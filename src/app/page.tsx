@@ -8,8 +8,8 @@ import AdSlot from '@/components/AdSlot';
 
 // ponytail: DB 미연결 시 보여주는 데모 데이터. .env.local 채우면 사라짐
 const MOCK_DATA: Report[] = [
-  { id: 'demo-1', created_at: '2024-08-20T00:00:00Z', name: '김*철', gender: '남성', age_group: '30대', height: '175cm', build: '보통', appearance: '안경 착용, 왼쪽 턱 흉터', contact_info: '010-****-1234', vehicle_number: null, incident_at: null, location: '강남구 논현동', damage_type: '노쇼 / 결제 회피', damage_amount: 150000, description: '결제 직전 잠적 및 연락두절', response_process: '연락 시도 3회 후 접수', evidence_type: '채팅 캡처', media_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400', views: 128 },
-  { id: 'demo-2', created_at: '2024-08-15T00:00:00Z', name: '이*영', gender: '여성', age_group: '20대', height: '160cm', build: '마름', appearance: '긴 생머리, 피어싱', contact_info: '@id1234', vehicle_number: null, incident_at: null, location: null, damage_type: '허위 피해 주장 / 억지 환불', damage_amount: null, description: '반복적인 단순 변심 환불 요청 및 폭언', response_process: null, evidence_type: '통화 녹취록', media_url: null, views: 42 },
+  { id: 'demo-1', created_at: '2024-08-20T00:00:00Z', name: '김*철', gender: '남성', age_group: '30대', height: '175cm', build: '보통', appearance: '안경 착용, 왼쪽 턱 흉터', contact_info: '010-****-1234', vehicle_number: null, incident_at: null, location: '강남구 논현동', damage_type: '노쇼 / 결제 회피', damage_amount: 150000, description: '결제 직전 잠적 및 연락두절', response_process: '연락 시도 3회 후 접수', evidence_type: '채팅 캡처', media_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400', views: 128, industry: '중고거래' },
+  { id: 'demo-2', created_at: '2024-08-15T00:00:00Z', name: '이*영', gender: '여성', age_group: '20대', height: '160cm', build: '마름', appearance: '긴 생머리, 피어싱', contact_info: '@id1234', vehicle_number: null, incident_at: null, location: null, damage_type: '허위 피해 주장 / 억지 환불', damage_amount: null, description: '반복적인 단순 변심 환불 요청 및 폭언', response_process: null, evidence_type: '통화 녹취록', media_url: null, views: 42, industry: '음식점/카페' },
 ];
 
 const emptyForm = {
@@ -17,15 +17,17 @@ const emptyForm = {
   contact_info: '', vehicle_number: '', appearance: '',
   incident_date: '', incident_time: '', location: '',
   damage_type: '허위 피해 주장 / 억지 환불', damage_amount: '', description: '', response_process: '',
-  evidence_type: '채팅 캡처', media_url: '',
+  evidence_type: '채팅 캡처', media_url: '', industry: '음식점/카페',
 };
+
+const INDUSTRY_TYPES = ['음식점/카페', '숙박', '중고거래', '서비스업', '기타'];
 
 const inputCls = "w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-amber-500/50 outline-none transition-all";
 
 export default function BlackArchive() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isReporting, setIsReporting] = useState(false);
-  const [filter, setFilter] = useState({ gender: '전체', build: '전체' });
+  const [filter, setFilter] = useState({ gender: '전체', build: '전체', industry: '전체' });
   const [reports, setReports] = useState<Report[]>(MOCK_DATA);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [form, setForm] = useState(emptyForm);
@@ -70,6 +72,7 @@ export default function BlackArchive() {
         response_process: form.response_process || null,
         evidence_type: mediaFile?.type.startsWith('video') ? 'CCTV 영상' : form.evidence_type,
         media_url: mediaUrl,
+        industry: form.industry,
       };
       const { error } = await supabase.from('reports').insert(payload);
       if (error) { alert('등록 실패: ' + error.message); return; }
@@ -87,7 +90,8 @@ export default function BlackArchive() {
     ((item.name + (item.appearance ?? '') + item.description +
       (item.contact_info ?? '') + (item.vehicle_number ?? '')).includes(searchQuery)) &&
     (filter.gender === '전체' || item.gender === filter.gender) &&
-    (filter.build === '전체' || item.build === filter.build)
+    (filter.build === '전체' || item.build === filter.build) &&
+    (filter.industry === '전체' || (item.industry ?? '기타') === filter.industry)
   );
 
   const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
@@ -103,6 +107,7 @@ export default function BlackArchive() {
             <span className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></span>
           </a>
           <div className="flex items-center gap-2">
+            <a href="/guide" className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors mr-2">대처 가이드</a>
             <a href="/terms" className="text-sm text-zinc-400 hover:text-white transition-colors mr-2">이용약관</a>
             <button
               onClick={() => setIsReporting(true)}
@@ -161,6 +166,14 @@ export default function BlackArchive() {
             </button>
           ))}
         </div>
+        {/* 업종 필터 */}
+        <div className="flex flex-wrap gap-2 mb-8 items-center">
+          {['전체', ...INDUSTRY_TYPES].map(ind => (
+            <button key={ind} onClick={() => setFilter(f => ({ ...f, industry: ind }))} className={cn("px-3 py-1.5 rounded-full text-xs font-medium transition-all", filter.industry === ind ? "bg-emerald-500 text-zinc-950" : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800")}>
+              {ind}
+            </button>
+          ))}
+        </div>
 
         {/* Grid Results */}
         {loading ? (
@@ -188,6 +201,7 @@ export default function BlackArchive() {
                 )}
                 <h3 className="text-xl font-bold text-white mb-2">{item.name} <span className="text-zinc-500 text-sm font-normal">{item.age_group}</span></h3>
                 <div className="flex flex-wrap gap-2 mb-4">
+                  {item.industry && <span className="px-2 py-0.5 bg-emerald-500/15 text-emerald-400 text-[11px] rounded-md">{item.industry}</span>}
                   <span className="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-[11px] rounded-md">{item.gender}</span>
                   {item.height && <span className="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-[11px] rounded-md">{item.height}</span>}
                   <span className="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-[11px] rounded-md">{item.build}</span>
@@ -291,6 +305,12 @@ export default function BlackArchive() {
 
               <fieldset className="space-y-4 border border-zinc-800 rounded-2xl p-4">
                 <legend className="text-xs font-bold text-amber-500 uppercase ml-2 px-1">피해 내용 및 규모</legend>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-zinc-500 ml-1">업종</label>
+                  <select value={form.industry} onChange={set('industry')} className={inputCls}>
+                    {INDUSTRY_TYPES.map(i => <option key={i}>{i}</option>)}
+                  </select>
+                </div>
                 <div className="space-y-2">
                   <label className="text-xs font-semibold text-zinc-500 ml-1">피해 유형 *</label>
                   <select value={form.damage_type} onChange={set('damage_type')} className={inputCls}>

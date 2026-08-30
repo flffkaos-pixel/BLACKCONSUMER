@@ -18,4 +18,5 @@ export interface Report {
   evidence_type: string | null;
   media_url: string | null;
   views: number;
+  industry: string | null;
 }

@@ -28,6 +28,9 @@ create policy "누구나 제보 등록" on reports for insert with check (true);
 -- 조회수
 alter table reports add column if not exists views integer not null default 0;
 
+-- 업종 카테고리
+alter table reports add column if not exists industry text;
+
 create or replace function increment_views(report_id uuid)
 returns void language sql as $$
   update reports set views = views + 1 where id = report_id;
