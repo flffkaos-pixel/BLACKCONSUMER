@@ -45,7 +45,10 @@ export default function TermsPage() {
         <div className="max-w-3xl mx-auto px-6 h-16 flex items-center gap-2">
           <ShieldAlert className="text-amber-500 w-6 h-6" />
           <Link href="/" className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></Link>
-          <span className="ml-auto"><Link href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">← 메인으로</Link></span>
+          <span className="ml-auto flex items-center gap-4">
+            <a href="https://jjokjjokso.pages.dev/" className="text-sm text-zinc-400 hover:text-white transition-colors" rel="noopener">좆좆소</a>
+            <Link href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">← 메인으로</Link>
+          </span>
         </div>
       </nav>
 

@@ -53,9 +53,12 @@ export default function ReportDetail({ id, initialReport }: { id: string; initia
             <ArrowLeft className="w-5 h-5" />
             <span className="flex items-center gap-2"><ShieldAlert className="text-amber-500 w-5 h-5" /><span className="font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></span></span>
           </Link>
-          <button onClick={share} className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all active:scale-95">
-            <Share2 className="w-4 h-4" /> {shared ? '복사됨!' : '공유'}
-          </button>
+          <div className="flex items-center gap-3">
+            <a href="https://jjokjjokso.pages.dev/" className="text-sm text-zinc-400 hover:text-white transition-colors" rel="noopener">좆좆소</a>
+            <button onClick={share} className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all active:scale-95">
+              <Share2 className="w-4 h-4" /> {shared ? '복사됨!' : '공유'}
+            </button>
+          </div>
         </div>
       </nav>
 
