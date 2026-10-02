@@ -96,8 +96,9 @@ export default function HomeClient({ initialReports }: { initialReports: Report[
             <span className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></span>
           </Link>
           <div className="flex items-center gap-2">
-            <a href="/guide" className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors mr-2">대처 가이드</a>
-            <a href="/terms" className="text-sm text-zinc-400 hover:text-white transition-colors mr-2">이용약관</a>
+            <Link href="/guide" className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors mr-2">대처 가이드</Link>
+            <Link href="/terms" className="text-sm text-zinc-400 hover:text-white transition-colors mr-2">이용약관</Link>
+            <a href="https://jjokjjokso.pages.dev/" className="text-sm text-zinc-400 hover:text-white transition-colors mr-2" rel="noopener">좆좆소</a>
             <button
               onClick={() => setIsReporting(true)}
               className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-zinc-950 px-4 py-2 rounded-full text-sm font-bold transition-all active:scale-95"
