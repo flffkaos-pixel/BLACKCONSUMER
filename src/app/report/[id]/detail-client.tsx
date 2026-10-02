@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ShieldAlert, ArrowLeft, User, Share2, MapPin, Calendar, Phone, Car, Eye, Wallet, MessageSquareWarning, Flag } from 'lucide-react';
 import type { Report } from '@/lib/types';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
@@ -7,22 +8,27 @@ import AdSlot from '@/components/AdSlot';
 
 const fmtAmount = (n: number | null) => n == null ? null : new Intl.NumberFormat('ko-KR').format(n) + '원';
 
-export default function ReportDetail({ id }: { id: string }) {
-  const [report, setReport] = useState<Report | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function ReportDetail({ id, initialReport }: { id: string; initialReport: Report | null }) {
+  const needsFetch = isSupabaseConfigured && !id.startsWith('demo-') && !initialReport;
+  const [report, setReport] = useState<Report | null>(initialReport);
+  const [loading, setLoading] = useState(needsFetch);
   const [shared, setShared] = useState(false);
   const [flagged, setFlagged] = useState(false);
 
   useEffect(() => {
-    if (!isSupabaseConfigured || id.toString().startsWith('demo-')) {
-      // 데모 모드: 메인의 mock과 동일한 예시 중 id 매칭은 생략하고 안내만 표시
-      setLoading(false);
-      return;
-    }
-    supabase.from('reports').select('*').eq('id', id).single()
-      .then(({ data }) => { setReport(data); setLoading(false); });
+    if (!needsFetch) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data } = await supabase.from('reports').select('*').eq('id', id).single();
+        if (!cancelled) { setReport(data); setLoading(false); }
+      } catch {
+        if (!cancelled) setLoading(false);
+      }
+    })();
     supabase.rpc('increment_views', { report_id: id }); // ponytail: 조회수, 중복 카운트 방지는 나중에
-  }, [id]);
+    return () => { cancelled = true; };
+  }, [id, needsFetch]);
 
   const flagReport = async () => {
     const { error } = await supabase.from('report_flags').insert({ report_id: id });
@@ -43,10 +49,10 @@ export default function ReportDetail({ id }: { id: string }) {
     <div className="min-h-screen bg-zinc-950 text-zinc-200 font-sans">
       <nav className="border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+          <Link href="/" className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
             <span className="flex items-center gap-2"><ShieldAlert className="text-amber-500 w-5 h-5" /><span className="font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></span></span>
-          </a>
+          </Link>
           <button onClick={share} className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all active:scale-95">
             <Share2 className="w-4 h-4" /> {shared ? '복사됨!' : '공유'}
           </button>

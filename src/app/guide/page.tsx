@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ShieldAlert, Scale, MessageCircle, FileText, Camera, ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "진상고객 대처법 가이드 | BLACKARCHIVE",
-  description: "블랙컨슈머 대처법: 허위 환불, 폭언, 리뷰 테러, 노쇼에 대응하는 실전 매뉴얼. 자영업자 필수 가이드.",
+  title: "진상고객 대처법 가이드",
+  description:
+    "블랙컨슈머 대처법: 허위 환불, 폭언, 리뷰 테러, 노쇼에 대응하는 실전 매뉴얼. 자영업자 필수 가이드. 증거 확보부터 법적 대응까지 단계별로 안내합니다.",
+  alternates: { canonical: "/guide" },
+  openGraph: {
+    url: "/guide",
+    type: "article",
+    title: "진상고객 대처법 가이드 | BLACKARCHIVE",
+    description:
+      "블랙컨슈머 대처법: 허위 환불, 폭언, 리뷰 테러, 노쇼에 대응하는 실전 매뉴얼. 자영업자 필수 가이드.",
+  },
 };
 
 const FAQS = [
@@ -40,8 +50,8 @@ export default function GuidePage() {
       <nav className="border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center gap-2">
           <ShieldAlert className="text-amber-500 w-6 h-6" />
-          <a href="/" className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></a>
-          <span className="ml-auto"><a href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">← 메인으로</a></span>
+          <Link href="/" className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></Link>
+          <span className="ml-auto"><Link href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">← 메인으로</Link></span>
         </div>
       </nav>
 

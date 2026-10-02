@@ -1,7 +1,18 @@
+import Link from "next/link";
+import type { Metadata } from "next";
 import { ShieldAlert } from "lucide-react";
 
-export const metadata = {
-  title: "이용약관 | BLACKARCHIVE",
+export const metadata: Metadata = {
+  title: "이용약관 및 법적 고지",
+  description:
+    "BLACKARCHIVE 서비스 이용약관. 서비스 목적, 금지 행위, 법적 책임(명예훼손·모욕), 정보 이용 시 주의사항, 게시물 삭제 요청 방법을 안내합니다.",
+  alternates: { canonical: "/terms" },
+  openGraph: {
+    url: "/terms",
+    title: "이용약관 및 법적 고지 | BLACKARCHIVE",
+    description:
+      "BLACKARCHIVE 서비스 이용약관. 서비스 목적, 금지 행위, 법적 책임, 정보 이용 시 주의사항을 안내합니다.",
+  },
 };
 
 const sections = [
@@ -33,8 +44,8 @@ export default function TermsPage() {
       <nav className="border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-6 h-16 flex items-center gap-2">
           <ShieldAlert className="text-amber-500 w-6 h-6" />
-          <a href="/" className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></a>
-          <span className="ml-auto"><a href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">← 메인으로</a></span>
+          <Link href="/" className="text-xl font-bold tracking-tighter text-white">BLACK<span className="text-amber-500">ARCHIVE</span></Link>
+          <span className="ml-auto"><Link href="/" className="text-sm text-zinc-400 hover:text-white transition-colors">← 메인으로</Link></span>
         </div>
       </nav>
 

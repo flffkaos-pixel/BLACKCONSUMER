@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   return {
     rules: [
       // 학습용 크롤러: 허용 (LLMO — 브랜드 인지)
@@ -22,6 +22,6 @@ export default function robots(): MetadataRoute.Robots {
       // 그 외 기본 허용
       { userAgent: "*", allow: "/" },
     ],
-    sitemap: `${base}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

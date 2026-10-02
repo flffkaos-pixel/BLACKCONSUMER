@@ -1,23 +1,63 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import {
+  SITE_URL,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_LOCALE,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "BLACKARCHIVE | 블랙컨슈머 디지털 아카이브",
-    template: "%s",
+    default: SITE_TITLE,
+    template: "%s | BLACKARCHIVE",
   },
-  description: "안전한 거래를 위한 블랙컨슈머 제보 및 검색 서비스. 이름, 연락처, 차량번호, 인상착의로 검색하세요.",
+  description: SITE_DESCRIPTION,
+  applicationName: "BLACKARCHIVE",
+  keywords: [
+    "블랙컨슈머",
+    "블랙컨슈머 검색",
+    "블랙리스트 아카이브",
+    "중고거래 사기 검색",
+    "피해 제보",
+    "진상고객 대처법",
+    "노쇼 블랙리스트",
+    "안전한 거래",
+  ],
   openGraph: {
-    title: "BLACKARCHIVE | 블랙컨슈머 디지털 아카이브",
-    description: "안전한 거래를 위한 블랙컨슈머 제보 및 검색 서비스",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: "BLACKARCHIVE",
     type: "website",
-    locale: "ko_KR",
+    locale: SITE_LOCALE,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  verification: {
+    google: "5m9WrjHo6HZ1aRzDjKvDEtLsv1Egv2K2yi-clQ1WHfk",
+    other: {
+      "naver-site-verification": "985014f4ac67680cdea4dbd3395ad557fc22dca1",
+    },
   },
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID ?? "ca-pub-1955893232253258";
+const ADSENSE_ID =
+  process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-1955893232253258";
 
 const orgJsonLd = {
   "@context": "https://schema.org",
@@ -27,15 +67,27 @@ const orgJsonLd = {
       "@id": `${SITE_URL}/#organization`,
       name: "BLACKARCHIVE",
       url: SITE_URL,
-      description: "안전한 거래를 위한 블랙컨슈머 제보 및 검색 서비스",
+      description: SITE_DESCRIPTION,
+      inLanguage: "ko-KR",
     },
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       name: "BLACKARCHIVE",
       url: SITE_URL,
-      publisher: { "@id": `${SITE_URL}/#organization` },
+      description: SITE_DESCRIPTION,
       inLanguage: "ko-KR",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/#webpage`,
+      url: SITE_URL,
+      name: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      inLanguage: "ko-KR",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": `${SITE_URL}/#organization` },
     },
   ],
 };
@@ -48,8 +100,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <meta name="naver-site-verification" content="985014f4ac67680cdea4dbd3395ad557fc22dca1" />
-        <meta name="google-site-verification" content="5m9WrjHo6HZ1aRzDjKvDEtLsv1Egv2K2yi-clQ1WHfk" />
         {ADSENSE_ID && (
           <script
             async
